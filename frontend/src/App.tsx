@@ -338,7 +338,7 @@ function App() {
               <select className="rounded border border-slate-700 bg-slate-950 px-3 py-2" value={taskForm.status} onChange={(e) => setTaskForm((v) => ({ ...v, status: e.target.value as TaskStatus }))}><option value="todo">Todo</option><option value="in_progress">In Progress</option><option value="done">Done</option></select>
               <input className="rounded border border-slate-700 bg-slate-950 px-3 py-2" type="number" min={1} max={3} value={taskForm.priority} onChange={(e) => setTaskForm((v) => ({ ...v, priority: Number(e.target.value) }))} />
               <input className="rounded border border-slate-700 bg-slate-950 px-3 py-2" type="number" min={0} value={taskForm.estimatedMinutes} onChange={(e) => setTaskForm((v) => ({ ...v, estimatedMinutes: Number(e.target.value) }))} />
-              <button className="rounded bg-cyan-500 px-3 py-2 font-medium text-slate-950 sm:col-span-2" type="submit">{taskEditingId ? 'Update task' : 'Add task'}</button>
+              <button className="rounded bg-primary px-3 py-2 font-medium text-slate-950 sm:col-span-2" type="submit">{taskEditingId ? 'Update task' : 'Add task'}</button>
             </form>
 
             <div className="grid gap-2 sm:grid-cols-3">
