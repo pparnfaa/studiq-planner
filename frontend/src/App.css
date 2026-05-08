@@ -1,0 +1,76 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.hero {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #fff;
+  border-radius: 1rem;
+  padding: 2rem;
+  text-align: left;
+}
+
+.tag {
+  margin: 0 0 0.5rem;
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+.subtitle {
+  margin-top: 0.75rem;
+  max-width: 60ch;
+}
+
+.api-bar {
+  margin-top: 1.25rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.api-bar button {
+  border: none;
+  background: #111827;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 0.65rem;
+  cursor: pointer;
+}
+
+.api-bar button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.api-bar span {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.9rem;
+  padding: 1rem;
+  text-align: left;
+  background: #fff;
+}
+
+.card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.card p {
+  margin: 0;
+  color: #4b5563;
+}

@@ -1,0 +1,113 @@
+name: studiq
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: studiq-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-studiq}
+      POSTGRES_USER: ${POSTGRES_USER:-studiq_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-studiq_pass}
+      TZ: ${TZ:-Asia/Bangkok}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-studiq_user} -d ${POSTGRES_DB:-studiq}",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+    networks:
+      - studiq_net
+
+  backend:
+    image: golang:1.23-alpine
+    container_name: studiq-backend
+    restart: unless-stopped
+    working_dir: /app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      APP_PORT: ${BACKEND_PORT:-8080}
+      DATABASE_URL: postgres://${POSTGRES_USER:-studiq_user}:${POSTGRES_PASSWORD:-studiq_pass}@postgres:5432/${POSTGRES_DB:-studiq}?sslmode=disable
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      TZ: ${TZ:-Asia/Bangkok}
+    volumes:
+      - ./backend:/app
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+    command: >
+      sh -c "go mod download &&
+             go run ./cmd/server"
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:8080/healthz || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+    networks:
+      - studiq_net
+
+  frontend:
+    image: node:22-alpine
+    container_name: studiq-frontend
+    restart: unless-stopped
+    working_dir: /app
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+      CHOKIDAR_USEPOLLING: "true"
+      TZ: ${TZ:-Asia/Bangkok}
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    command: >
+      sh -c "npm install &&
+             npm run dev -- --host 0.0.0.0 --port 5173"
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    networks:
+      - studiq_net
+
+  migrate:
+    image: migrate/migrate:v4.18.1
+    container_name: studiq-migrate
+    profiles: ["tools"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/migrations:/migrations
+    command:
+      [
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://${POSTGRES_USER:-studiq_user}:${POSTGRES_PASSWORD:-studiq_pass}@postgres:5432/${POSTGRES_DB:-studiq}?sslmode=disable",
+        "up",
+      ]
+    networks:
+      - studiq_net
+
+volumes:
+  postgres_data:
+  go_mod_cache:
+  go_build_cache:
+  frontend_node_modules:
+
+networks:
+  studiq_net:
+    driver: bridge
