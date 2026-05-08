@@ -1,11 +1,19 @@
 @import "tailwindcss";
 
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
 @theme {
   --color-primary: #81a6c6;
   --color-secondary: #aacddc;
   --color-surface: #f3e3d0;
   --color-taupe: #d2c4b4;
-  --color-background: var(--color-surface);
+  --color-background: oklch(0.985 0.008 80);
   --color-muted: var(--color-taupe);
   --color-accent: var(--color-secondary);
+  --color-foreground: #3a342f;
+  --color-elevated: #fffcf8;
 }

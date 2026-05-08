@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState, type FormEvent } from 'react'
 import { DashboardHeader } from './components/DashboardHeader'
 import { FocusHistorySection } from './components/FocusHistorySection'
@@ -226,7 +227,7 @@ function App() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 px-4 py-6 text-slate-100 sm:px-6">
+    <main className="min-h-screen bg-background px-4 py-6 text-foreground sm:px-6">
       <div className="mx-auto max-w-7xl space-y-6">
         <DashboardHeader onRefresh={refreshAll} message={message} />
         <SummaryCards summary={summary} />

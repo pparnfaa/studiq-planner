@@ -30,18 +30,18 @@ export function FocusTimerSection({
   onEndSession,
 }: FocusTimerSectionProps) {
   return (
-    <div className="space-y-3 rounded-xl border border-violet-500/20 bg-slate-900/70 p-4">
-      <h2 className="text-xl font-semibold text-violet-300">Focus Timer</h2>
-      <p className="text-5xl font-bold">{formatTimer(timerSeconds)}</p>
+    <div className="space-y-3 rounded-xl border border-taupe/80 bg-secondary/25 p-4 shadow-sm">
+      <h2 className="text-xl font-semibold text-primary">Focus Timer</h2>
+      <p className="text-5xl font-bold text-foreground">{formatTimer(timerSeconds)}</p>
       <div className="grid gap-2 sm:grid-cols-3">
         <input
-          className="rounded border border-slate-700 bg-slate-950 px-3 py-2 sm:col-span-2"
+          className="rounded border border-taupe bg-elevated px-3 py-2 text-foreground placeholder:text-foreground/45 sm:col-span-2"
           placeholder="Subject"
           value={timerSubject}
           onChange={(e) => setTimerSubject(e.target.value)}
         />
         <select
-          className="rounded border border-slate-700 bg-slate-950 px-3 py-2"
+          className="rounded border border-taupe bg-elevated px-3 py-2 text-foreground"
           value={timerMode}
           onChange={(e) => setTimerMode(e.target.value as FocusMode)}
         >
@@ -49,7 +49,7 @@ export function FocusTimerSection({
           <option value="break">Break</option>
         </select>
         <input
-          className="rounded border border-slate-700 bg-slate-950 px-3 py-2 sm:col-span-3"
+          className="rounded border border-taupe bg-elevated px-3 py-2 text-foreground placeholder:text-foreground/45 sm:col-span-3"
           type="number"
           min={0}
           placeholder="Optional task ID"
@@ -59,20 +59,20 @@ export function FocusTimerSection({
       </div>
       <div className="flex flex-wrap gap-2">
         <button
-          className="rounded bg-violet-500 px-3 py-2 text-sm font-medium text-slate-950"
+          className="rounded bg-primary px-3 py-2 text-sm font-medium text-background hover:bg-primary/90"
           type="button"
           onClick={onStartTimer}
         >
           Start
         </button>
-        <button className="rounded bg-slate-700 px-3 py-2 text-sm" type="button" onClick={onPauseTimer}>
+        <button className="rounded bg-muted px-3 py-2 text-sm text-foreground hover:bg-muted/90" type="button" onClick={onPauseTimer}>
           Pause
         </button>
-        <button className="rounded bg-slate-700 px-3 py-2 text-sm" type="button" onClick={onResetTimer}>
+        <button className="rounded bg-muted px-3 py-2 text-sm text-foreground hover:bg-muted/90" type="button" onClick={onResetTimer}>
           Reset
         </button>
         <button
-          className="rounded bg-emerald-500 px-3 py-2 text-sm font-medium text-slate-950"
+          className="rounded bg-foreground px-3 py-2 text-sm font-medium text-background hover:bg-foreground/90"
           type="button"
           onClick={() => void onEndSession()}
         >
